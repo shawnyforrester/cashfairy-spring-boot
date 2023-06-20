@@ -50,6 +50,10 @@ public class customer implements UserDetails {
 
     @OneToMany
     @JsonManagedReference
+    private List<Token> tokens;
+
+    @OneToMany
+    @JsonManagedReference
     private List<transactions> ownerTransactions;
 
     @Override
