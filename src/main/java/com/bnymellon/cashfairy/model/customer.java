@@ -49,7 +49,6 @@ public class customer implements UserDetails {
     private accounts owner_account;
 
     @OneToMany
-    @JsonManagedReference
     private List<Token> tokens;
 
     @OneToMany
@@ -58,7 +57,7 @@ public class customer implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority(this.role.name()));
     }
 
     @Override

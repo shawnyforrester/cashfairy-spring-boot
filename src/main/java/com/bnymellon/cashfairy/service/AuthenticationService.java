@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,13 +26,16 @@ import java.util.List;
 @Service
 public class AuthenticationService {
 
+    @Autowired
     private customerRep cRepo;
     private final PasswordEncoder passwordEncoder;
+    @Autowired
     private final TokenRepository tokenRepository;
+    @Autowired
     private final JwtService jwtService;
-
     private final AuthenticationManager authManager;
 
+    @Autowired
     public AuthenticationService(PasswordEncoder passwordEncoder, customerRep cRepo, TokenRepository tokenRepository, JwtService jwtService, AuthenticationManager authManager) {
         this.passwordEncoder = passwordEncoder;
         this.cRepo = cRepo;
@@ -54,13 +58,14 @@ public class AuthenticationService {
                         request.getPassword()
                 )
         );
-        var user = cRepo.findByUsername(request.getUsername());
+        customer user = this.cRepo.findByUsername(request.getUsername()).get();
 //        var jwtToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(user, refreshToken);
         return AuthenticationResponse.builder()
                 .refreshToken(refreshToken)
+                .customer(user)
                 .build();
 
 
@@ -134,7 +139,7 @@ public class AuthenticationService {
         refreshToken = authHeader.substring(7);
         userName = jwtService.extractUserName(refreshToken);
         if (userName != null) {
-            var user = this.cRepo.findByUsername(userName);
+            customer user = this.cRepo.findByUsername(userName).get();
 
             if (jwtService.isTokenValid(refreshToken, user)) {
                 var accessToken = jwtService.generateToken(user);

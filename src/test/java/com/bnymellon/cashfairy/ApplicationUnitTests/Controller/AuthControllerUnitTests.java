@@ -1,5 +1,6 @@
 package com.bnymellon.cashfairy.ApplicationUnitTests.Controller;
 
+import com.bnymellon.cashfairy.config.SecurityConfiguration;
 import com.bnymellon.cashfairy.controller.AuthenticationRequest;
 import com.bnymellon.cashfairy.controller.AuthenticationResponse;
 import com.bnymellon.cashfairy.controller.authController;
@@ -14,27 +15,34 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 
 import java.util.List;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.http.ResponseEntity.status;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 
 /**
  * This class will test the controllers in the application. The @WebMvcTest annotation
  * will only load the controller/presentation layer (anything annotated @Controller)
- * it is not loading services or repos
+ * it is not loading services or repos.
  */
-@WebMvcTest
+@WebMvcTest(authController.class)
+@Import(SecurityConfiguration.class)
 public class AuthControllerUnitTests {
 
     @Autowired
@@ -49,23 +57,17 @@ public class AuthControllerUnitTests {
 
     //Login and authentication tests
     @Test
+    @WithMockUser
     public void registrationHandlerTest() throws Exception {
-        //Build the request
-        RequestBuilder request = MockMvcRequestBuilders.get("/registration");
 
-        //Perform the request
-        MvcResult mvcResult = mockMvc.perform(request)
-                .andDo(print())
-                .andReturn();
-        //assert
-        String response = mvcResult.getResponse().getContentAsString();
-        System.out.print(response);
-
-
+    //resource used https://www.arhohuttunen.com/spring-security-testing/
     }
 
     @Test
-    public void loginAuthenticationHandlerTest(){}
+    public void loginAuthenticationHandlerTest() throws Exception {
+
+        //resource used https://www.arhohuttunen.com/spring-security-testing/
+    }
 
     //Account controller tests
     @Test

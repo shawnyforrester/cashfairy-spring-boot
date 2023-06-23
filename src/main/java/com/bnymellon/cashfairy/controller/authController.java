@@ -1,7 +1,8 @@
 package com.bnymellon.cashfairy.controller;
 
 import com.bnymellon.cashfairy.service.AuthenticationService;
-import lombok.RequiredArgsConstructor;
+import com.bnymellon.cashfairy.service.LogoutService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class authController {
 
     private final AuthenticationService service;
+    private final LogoutService ls;
 
-    public authController(AuthenticationService service) {
+    public authController(AuthenticationService service, LogoutService ls) {
         this.service = service;
+        this.ls = ls;
     }
 
     @CrossOrigin(value = "http://localhost:4200", allowCredentials = "true")
@@ -34,4 +37,6 @@ public class authController {
     ){
         return ResponseEntity.ok(this.service.loginAuthentication(request));
     }
+
+
 }

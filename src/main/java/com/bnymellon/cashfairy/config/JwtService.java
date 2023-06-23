@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -29,9 +30,6 @@ public class JwtService {
 
     //    private static final String SECRET_KEY = "BF79B93BEE87E17146579E3C2FBC8";//this may be placed in the
     //application properties or replaced with a generator service
-    public JwtService() {
-
-    }
 
 
     /**

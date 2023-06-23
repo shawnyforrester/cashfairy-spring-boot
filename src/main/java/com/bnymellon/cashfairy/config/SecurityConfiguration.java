@@ -17,22 +17,13 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    @Autowired
+
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutHandler logoutHandler;
-
-    @Autowired
-    public SecurityConfiguration(JwtAuthenticationFilter jwtAuthFilter,
-                                 AuthenticationProvider authenticationProvider,
-                                 LogoutHandler logoutHandler) {
-        this.jwtAuthFilter = jwtAuthFilter;
-        this.authenticationProvider = authenticationProvider;
-        this.logoutHandler = logoutHandler;
-    }
-
 
 
 

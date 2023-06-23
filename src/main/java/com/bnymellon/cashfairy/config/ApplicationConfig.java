@@ -2,7 +2,9 @@ package com.bnymellon.cashfairy.config;
 
 import com.bnymellon.cashfairy.dao.customerRep;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -18,17 +20,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private customerRep cRepo;
-
-    public ApplicationConfig(customerRep cRepo) {
-        this.cRepo = cRepo;
-    }
+    private final customerRep cRepo;
 
     @Bean
     public UserDetailsService userDetailsService() throws UsernameNotFoundException{
-        return username -> this.cRepo.findByUsername(username);
-
+        return username -> this.cRepo.findByUsername(username).get();
     }
+
+  
 
     @Bean
     public AuthenticationProvider authenticationProvider(){

@@ -32,6 +32,9 @@ public class accounts {
     @Column(name = "credit_card")
     private String credit_card;
 
+    @Column(name = "balance")
+    private Double balance;
+
     @OneToOne(fetch = FetchType.EAGER)
     private customer owner;
 }
